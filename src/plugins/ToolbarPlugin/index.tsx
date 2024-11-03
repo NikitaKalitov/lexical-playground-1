@@ -336,13 +336,6 @@ function BlockFormatDropDown({
         <span className="text">Numbered List</span>
       </DropDownItem>
       <DropDownItem
-        className={"item " + dropDownActiveClass(blockType === "check")}
-        onClick={formatCheckList}
-      >
-        <i className="icon check-list" />
-        <span className="text">Check List</span>
-      </DropDownItem>
-      <DropDownItem
         className={"item " + dropDownActiveClass(blockType === "quote")}
         onClick={formatQuote}
       >
@@ -479,36 +472,6 @@ function ElementFormatDropdown({
       >
         <i className="icon justify-align" />
         <span className="text">Justify Align</span>
-      </DropDownItem>
-      <DropDownItem
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "start");
-        }}
-        className="item"
-      >
-        <i
-          className={`icon ${
-            isRTL
-              ? ELEMENT_FORMAT_OPTIONS.start.iconRTL
-              : ELEMENT_FORMAT_OPTIONS.start.icon
-          }`}
-        />
-        <span className="text">Start Align</span>
-      </DropDownItem>
-      <DropDownItem
-        onClick={() => {
-          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "end");
-        }}
-        className="item"
-      >
-        <i
-          className={`icon ${
-            isRTL
-              ? ELEMENT_FORMAT_OPTIONS.end.iconRTL
-              : ELEMENT_FORMAT_OPTIONS.end.icon
-          }`}
-        />
-        <span className="text">End Align</span>
       </DropDownItem>
       <Divider />
       <DropDownItem
@@ -943,7 +906,7 @@ export default function ToolbarPlugin({
         </DropDown>
       ) : (
         <>
-          <FontDropDown
+          {/* <FontDropDown
             disabled={!isEditable}
             style={"font-family"}
             value={fontFamily}
@@ -955,7 +918,7 @@ export default function ToolbarPlugin({
             editor={activeEditor}
             disabled={!isEditable}
           />
-          <Divider />
+          <Divider /> */}
           <button
             disabled={!isEditable}
             onClick={() => {
@@ -998,20 +961,6 @@ export default function ToolbarPlugin({
           >
             <i className="format underline" />
           </button>
-          {canViewerSeeInsertCodeButton && (
-            <button
-              disabled={!isEditable}
-              onClick={() => {
-                activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
-              }}
-              className={"toolbar-item spaced " + (isCode ? "active" : "")}
-              title="Insert code block"
-              type="button"
-              aria-label="Insert code block"
-            >
-              <i className="format code" />
-            </button>
-          )}
           <button
             disabled={!isEditable}
             onClick={insertLink}
@@ -1108,27 +1057,6 @@ export default function ToolbarPlugin({
               >
                 <DropDownItem
                   onClick={() => {
-                    activeEditor.dispatchCommand(
-                      INSERT_HORIZONTAL_RULE_COMMAND,
-                      undefined
-                    );
-                  }}
-                  className="item"
-                >
-                  <i className="icon horizontal-rule" />
-                  <span className="text">Horizontal Rule</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    activeEditor.dispatchCommand(INSERT_PAGE_BREAK, undefined);
-                  }}
-                  className="item"
-                >
-                  <i className="icon page-break" />
-                  <span className="text">Page Break</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
                     showModal("Insert Image", (onClose) => (
                       <InsertImageDialog
                         activeEditor={activeEditor}
@@ -1156,18 +1084,6 @@ export default function ToolbarPlugin({
                   <span className="text">Inline Image</span>
                 </DropDownItem>
                 <DropDownItem
-                  onClick={() =>
-                    insertGifOnClick({
-                      altText: "Cat typing on a laptop",
-                      src: catTypingGif,
-                    })
-                  }
-                  className="item"
-                >
-                  <i className="icon gif" />
-                  <span className="text">GIF</span>
-                </DropDownItem>
-                <DropDownItem
                   onClick={() => {
                     showModal("Insert Table", (onClose) => (
                       <InsertTableDialog
@@ -1180,20 +1096,6 @@ export default function ToolbarPlugin({
                 >
                   <i className="icon table" />
                   <span className="text">Table</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Poll", (onClose) => (
-                      <InsertPollDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon poll" />
-                  <span className="text">Poll</span>
                 </DropDownItem>
                 <DropDownItem
                   onClick={() => {
@@ -1224,46 +1126,6 @@ export default function ToolbarPlugin({
                   <i className="icon equation" />
                   <span className="text">Equation</span>
                 </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    editor.update(() => {
-                      const root = $getRoot();
-                      const stickyNode = $createStickyNode(0, 0);
-                      root.append(stickyNode);
-                    });
-                  }}
-                  className="item"
-                >
-                  <i className="icon sticky" />
-                  <span className="text">Sticky Note</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    editor.dispatchCommand(
-                      INSERT_COLLAPSIBLE_COMMAND,
-                      undefined
-                    );
-                  }}
-                  className="item"
-                >
-                  <i className="icon caret-right" />
-                  <span className="text">Collapsible container</span>
-                </DropDownItem>
-                {EmbedConfigs.map((embedConfig) => (
-                  <DropDownItem
-                    key={embedConfig.type}
-                    onClick={() => {
-                      activeEditor.dispatchCommand(
-                        INSERT_EMBED_COMMAND,
-                        embedConfig.type
-                      );
-                    }}
-                    className="item"
-                  >
-                    {embedConfig.icon}
-                    <span className="text">{embedConfig.contentName}</span>
-                  </DropDownItem>
-                ))}
               </DropDown>
             </>
           )}

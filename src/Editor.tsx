@@ -80,7 +80,11 @@ const skipCollaborationInit =
   // @ts-expect-error text
   window.parent != null && window.parent.frames.right === window;
 
-export default function Editor(): JSX.Element {
+export default function Editor({
+  initialState,
+}: {
+  initialState?: string;
+}): JSX.Element {
   const { historyState } = useSharedHistoryContext();
   const {
     settings: {
@@ -129,41 +133,14 @@ export default function Editor(): JSX.Element {
     };
   }, [isSmallWidthViewport]);
 
-  // TODO первый вариант
-  // const [editor] = useLexicalComposerContext();
-  // editor.update(() => {
-  //   // const htmlString = `<p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="white-space: pre-wrap;">fsffksldkvv</span></p><p class="PlaygroundEditorTheme__paragraph"><a href="https://" rel="noreferrer" class="PlaygroundEditorTheme__link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/640px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg" alt="" width="inherit" height="inherit"></a></p>`;
-  //   const htmlString = `<p><strong>Вводятся </strong><i>два </i><u>числа</u>. <mark class="marker-yellow">Вывести </mark>их <s>сумму</s></p><ul><li>Пункт1</li><li>Пункт2</li></ul><ol><li>Раз</li><li>Два</li></ol><p style="text-align:center;">центр</p><p><span class="text-huge">Союз </span><span style="color:hsl(0, 75%, 60%);">Советских </span><span style="background-color:hsl(0, 75%, 60%);">Социалистических </span><span class="text-tiny">Республик</span></p><p><a href="https://ts-nix.vplicei.org/task/list">Ссылка</a></p><p>≅±ƒ§∩∪½≥≤&gt;&lt;</p><p>а<sub>а</sub> б<sup>б</sup></p><p style="margin-left:40px;">отступ</p><figure class="image image_resized" style="width:15.25%;"><img src="https://i.redd.it/8ykqgqw9yffc1.png"></figure>`;
-  //   const parser = new DOMParser();
-  //   const dom = parser.parseFromString(htmlString, "text/html");
-
-  //   // Once you have the DOM instance it's easy to generate LexicalNodes.
-  //   const nodes = $generateNodesFromDOM(editor, dom);
-
-  //   // Select the root
-  //   $getRoot().select();
-
-  //   // Insert them at a selection.
-  //   $insertNodes(nodes);
-  // });
-
   return (
     <>
       {/* <ShareDataButton onClick={onClick} /> */}
       {isRichText && <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />}
-      <div
-        className={`editor-container ${showTreeView ? "tree-view" : ""} ${
-          !isRichText ? "plain-text" : ""
-        }`}
-      >
+      <div className={`editor-container`}>
+        {/* `<p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="white-space: pre-wrap;">fsffksldkvv</span></p><p class="PlaygroundEditorTheme__paragraph"><a href="https://" rel="noreferrer" class="PlaygroundEditorTheme__link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/640px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg" alt="" width="272" height="181.4715966796875"></a></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">I made the pictre smaller</span></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">Georgia font</span></p>` */}
         {isMaxLength && <MaxLengthPlugin maxLength={30} />}
-        {/* TODO нормальный способ */}
-        <RestoreEditorStatePlugin
-          // state={`<p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="white-space: pre-wrap;">fsffksldkvv</span></p><p class="PlaygroundEditorTheme__paragraph"><a href="https://" rel="noreferrer" class="PlaygroundEditorTheme__link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/640px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg" alt="" width="inherit" height="inherit"></a></p>`}
-          state={`<p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="white-space: pre-wrap;">fsffksldkvv</span></p><p class="PlaygroundEditorTheme__paragraph"><a href="https://" rel="noreferrer" class="PlaygroundEditorTheme__link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/640px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg" alt="" width="272" height="181.4715966796875"></a></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">I made the pictre smaller</span></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">Georgia font</span></p>`}
-          // state={`<p><strong>Вводятся </strong><i>два </i><u>числа</u>. <mark class=\"marker-yellow\">Вывести </mark>их <s>сумму</s></p><ul><li>Пункт1</li><li>Пункт2</li></ul><ol><li>Раз</li><li>Два</li></ol><p style=\"text-align:center;\">центр</p><p><span class=\"text-huge\">Союз </span><span style=\"color:hsl(0, 75%, 60%);\">Советских </span><span style=\"background-color:hsl(0, 75%, 60%);\">Социалистических </span><span class=\"text-tiny\">Республик</span></p><p><a href=\"https://ts-nix.vplicei.org/task/list\">Ссылка</a></p><p>≅±ƒ§∩∪½≥≤&gt;&lt;</p><p>а<sub>а</sub> б<sup>б</sup></p><p style=\"margin-left:40px;\">отступ</p><figure class=\"image image_resized\" style=\"width:15.25%;\"><img src=\"https://i.redd.it/8ykqgqw9yffc1.png\"></figure>`}
-        />
-        <GetContentButtonPlugin />
+        {initialState && <RestoreEditorStatePlugin state={initialState} />}
         <DragDropPaste />
         <AutoFocusPlugin />
         <ClearEditorPlugin />
@@ -177,22 +154,8 @@ export default function Editor(): JSX.Element {
         <KeywordsPlugin />
         <SpeechToTextPlugin />
         <AutoLinkPlugin />
-        {/* TODO remove this */}
-        {/* <CommentPlugin
-          providerFactory={isCollab ? createWebsocketProvider : undefined}
-        /> */}
         {isRichText ? (
           <>
-            {/* TODO remove this */}
-            {/* {isCollab  ? (
-              <CollaborationPlugin
-                id="main"
-                providerFactory={createWebsocketProvider}
-                shouldBootstrap={!skipCollaborationInit}
-              />
-            ) : (
-              <HistoryPlugin externalHistoryState={historyState} />
-            )} */}
             <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={
@@ -229,7 +192,7 @@ export default function Editor(): JSX.Element {
             <CollapsiblePlugin />
             <PageBreakPlugin />
             <LayoutPlugin />
-            {floatingAnchorElem && !isSmallWidthViewport && (
+            {floatingAnchorElem && (
               <>
                 <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
                 <CodeActionMenuPlugin anchorElem={floatingAnchorElem} />
@@ -265,17 +228,8 @@ export default function Editor(): JSX.Element {
             maxLength={5}
           />
         )}
-        {isAutocomplete && <AutocompletePlugin />}
-        <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         {shouldUseLexicalContextMenu && <ContextMenuPlugin />}
-        {/* TODO remove this */}
-        {/* <ActionsPlugin
-          isRichText={isRichText}
-          shouldPreserveNewLinesInMarkdown={shouldPreserveNewLinesInMarkdown}
-        /> */}
       </div>
-      {/* TODO remove this */}
-      {/* {showTreeView && <TreeViewPlugin />} */}
     </>
   );
 }
