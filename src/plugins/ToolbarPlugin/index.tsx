@@ -906,19 +906,6 @@ export default function ToolbarPlugin({
         </DropDown>
       ) : (
         <>
-          {/* <FontDropDown
-            disabled={!isEditable}
-            style={"font-family"}
-            value={fontFamily}
-            editor={activeEditor}
-          />
-          <Divider />
-          <FontSize
-            selectionFontSize={fontSize.slice(0, -2)}
-            editor={activeEditor}
-            disabled={!isEditable}
-          />
-          <Divider /> */}
           <button
             disabled={!isEditable}
             onClick={() => {
@@ -1045,100 +1032,94 @@ export default function ToolbarPlugin({
               <span className="text">Clear Formatting</span>
             </DropDownItem>
           </DropDown>
-          {canViewerSeeInsertDropdown && (
-            <>
-              <Divider />
-              <DropDown
-                disabled={!isEditable}
-                buttonClassName="toolbar-item spaced"
-                buttonLabel="Insert"
-                buttonAriaLabel="Insert specialized editor node"
-                buttonIconClassName="icon plus"
-              >
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Image", (onClose) => (
-                      <InsertImageDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon image" />
-                  <span className="text">Image</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Inline Image", (onClose) => (
-                      <InsertInlineImageDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon image" />
-                  <span className="text">Inline Image</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Table", (onClose) => (
-                      <InsertTableDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon table" />
-                  <span className="text">Table</span>
-                </DropDownItem>
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Columns Layout", (onClose) => (
-                      <InsertLayoutDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon columns" />
-                  <span className="text">Columns Layout</span>
-                </DropDownItem>
-
-                <DropDownItem
-                  onClick={() => {
-                    showModal("Insert Equation", (onClose) => (
-                      <InsertEquationDialog
-                        activeEditor={activeEditor}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                  className="item"
-                >
-                  <i className="icon equation" />
-                  <span className="text">Equation</span>
-                </DropDownItem>
-              </DropDown>
-            </>
-          )}
+          <Divider />
         </>
       )}
-      <Divider />
       <ElementFormatDropdown
         disabled={!isEditable}
         value={elementFormat}
         editor={activeEditor}
         isRTL={isRTL}
       />
-
+      <Divider />
+      <DropDown
+        disabled={!isEditable}
+        buttonClassName="toolbar-item spaced"
+        buttonLabel="Insert"
+        buttonAriaLabel="Insert specialized editor node"
+        buttonIconClassName="icon plus"
+      >
+        <DropDownItem
+          onClick={() => {
+            showModal("Insert Image", (onClose) => (
+              <InsertImageDialog
+                activeEditor={activeEditor}
+                onClose={onClose}
+              />
+            ));
+          }}
+          className="item"
+        >
+          <i className="icon image" />
+          <span className="text">Image</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            showModal("Insert Inline Image", (onClose) => (
+              <InsertInlineImageDialog
+                activeEditor={activeEditor}
+                onClose={onClose}
+              />
+            ));
+          }}
+          className="item"
+        >
+          <i className="icon image" />
+          <span className="text">Inline Image</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            showModal("Insert Table", (onClose) => (
+              <InsertTableDialog
+                activeEditor={activeEditor}
+                onClose={onClose}
+              />
+            ));
+          }}
+          className="item"
+        >
+          <i className="icon table" />
+          <span className="text">Table</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            showModal("Insert Columns Layout", (onClose) => (
+              <InsertLayoutDialog
+                activeEditor={activeEditor}
+                onClose={onClose}
+              />
+            ));
+          }}
+          className="item"
+        >
+          <i className="icon columns" />
+          <span className="text">Columns Layout</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            showModal("Insert Equation", (onClose) => (
+              <InsertEquationDialog
+                activeEditor={activeEditor}
+                onClose={onClose}
+              />
+            ));
+          }}
+          className="item"
+        >
+          <i className="icon equation" />
+          <span className="text">Equation</span>
+        </DropDownItem>
+      </DropDown>
       {modal}
     </div>
   );
