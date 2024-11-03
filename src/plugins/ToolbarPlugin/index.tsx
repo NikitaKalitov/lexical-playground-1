@@ -21,10 +21,8 @@ import {
   INSERT_UNORDERED_LIST_COMMAND,
   ListNode,
 } from "@lexical/list";
-import { INSERT_EMBED_COMMAND } from "@lexical/react/LexicalAutoEmbedPlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
-import { INSERT_HORIZONTAL_RULE_COMMAND } from "@lexical/react/LexicalHorizontalRuleNode";
 import {
   $createHeadingNode,
   $createQuoteNode,
@@ -72,18 +70,13 @@ import {
   UNDO_COMMAND,
 } from "lexical";
 import { Dispatch, useCallback, useEffect, useState } from "react";
-import * as React from "react";
 import { IS_APPLE } from "../../shared/src/environment";
 
 import useModal from "../../hooks/useModal";
-import catTypingGif from "../../images/cat-typing.gif";
-import { $createStickyNode } from "../../nodes/StickyNode";
 import DropDown, { DropDownItem } from "../../ui/DropDown";
 import DropdownColorPicker from "../../ui/DropdownColorPicker";
 import { getSelectedNode } from "../../utils/getSelectedNode";
 import { sanitizeUrl } from "../../utils/url";
-import { EmbedConfigs } from "../AutoEmbedPlugin";
-import { INSERT_COLLAPSIBLE_COMMAND } from "../CollapsiblePlugin";
 import { InsertEquationDialog } from "../EquationsPlugin";
 import {
   INSERT_IMAGE_COMMAND,
@@ -92,10 +85,7 @@ import {
 } from "../ImagesPlugin";
 import { InsertInlineImageDialog } from "../InlineImagePlugin";
 import InsertLayoutDialog from "../LayoutPlugin/InsertLayoutDialog";
-import { INSERT_PAGE_BREAK } from "../PageBreakPlugin";
-import { InsertPollDialog } from "../PollPlugin";
 import { InsertTableDialog } from "../TablePlugin";
-import FontSize from "./fontSize";
 
 const blockTypeToBlockName = {
   bullet: "Bulleted List",
@@ -238,14 +228,6 @@ function BlockFormatDropDown({
     }
   };
 
-  const formatCheckList = () => {
-    if (blockType !== "check") {
-      editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
-    } else {
-      formatParagraph();
-    }
-  };
-
   const formatNumberedList = () => {
     if (blockType !== "number") {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
@@ -355,63 +337,6 @@ function BlockFormatDropDown({
 
 function Divider(): JSX.Element {
   return <div className="divider" />;
-}
-
-function FontDropDown({
-  editor,
-  value,
-  style,
-  disabled = false,
-}: {
-  editor: LexicalEditor;
-  value: string;
-  style: string;
-  disabled?: boolean;
-}): JSX.Element {
-  const handleClick = useCallback(
-    (option: string) => {
-      editor.update(() => {
-        const selection = $getSelection();
-        if (selection !== null) {
-          $patchStyleText(selection, {
-            [style]: option,
-          });
-        }
-      });
-    },
-    [editor, style]
-  );
-
-  const buttonAriaLabel =
-    style === "font-family"
-      ? "Formatting options for font family"
-      : "Formatting options for font size";
-
-  return (
-    <DropDown
-      disabled={disabled}
-      buttonClassName={"toolbar-item " + style}
-      buttonLabel={value}
-      buttonIconClassName={
-        style === "font-family" ? "icon block-type font-family" : ""
-      }
-      buttonAriaLabel={buttonAriaLabel}
-    >
-      {(style === "font-family" ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(
-        ([option, text]) => (
-          <DropDownItem
-            className={`item ${dropDownActiveClass(value === option)} ${
-              style === "font-size" ? "fontsize-item" : ""
-            }`}
-            onClick={() => handleClick(option)}
-            key={option}
-          >
-            <span className="text">{text}</span>
-          </DropDownItem>
-        )
-      )}
-    </DropDown>
-  );
 }
 
 function ElementFormatDropdown({
@@ -838,12 +763,6 @@ export default function ToolbarPlugin({
     },
     [activeEditor, selectedElementKey]
   );
-  const insertGifOnClick = (payload: InsertImagePayload) => {
-    activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-  };
-
-  const canViewerSeeInsertDropdown = !isImageCaption;
-  const canViewerSeeInsertCodeButton = !isImageCaption;
 
   return (
     <div className="toolbar">

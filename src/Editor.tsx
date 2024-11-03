@@ -6,13 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { CharacterLimitPlugin } from "@lexical/react/LexicalCharacterLimitPlugin";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import { ClickableLinkPlugin } from "@lexical/react/LexicalClickableLinkPlugin";
-import { CollaborationPlugin } from "@lexical/react/LexicalCollaborationPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HashtagPlugin } from "@lexical/react/LexicalHashtagPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -23,21 +21,16 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { useLexicalEditable } from "@lexical/react/useLexicalEditable";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { CAN_USE_DOM } from "./shared/src/canUseDOM";
 
-import { createWebsocketProvider } from "./collaboration";
 import { useSettings } from "./context/SettingsContext";
 import { useSharedHistoryContext } from "./context/SharedHistoryContext";
-import ActionsPlugin from "./plugins/ActionsPlugin";
-import AutocompletePlugin from "./plugins/AutocompletePlugin";
 import AutoEmbedPlugin from "./plugins/AutoEmbedPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 import CodeActionMenuPlugin from "./plugins/CodeActionMenuPlugin";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import CollapsiblePlugin from "./plugins/CollapsiblePlugin";
-import CommentPlugin from "./plugins/CommentPlugin";
 import ComponentPickerPlugin from "./plugins/ComponentPickerPlugin";
 import ContextMenuPlugin from "./plugins/ContextMenuPlugin";
 import DragDropPaste from "./plugins/DragDropPastePlugin";
@@ -64,15 +57,10 @@ import TabFocusPlugin from "./plugins/TabFocusPlugin";
 import TableCellActionMenuPlugin from "./plugins/TableActionMenuPlugin";
 import TableCellResizer from "./plugins/TableCellResizer";
 import TableHoverActionsPlugin from "./plugins/TableHoverActionsPlugin";
-import TableOfContentsPlugin from "./plugins/TableOfContentsPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
-import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import TwitterPlugin from "./plugins/TwitterPlugin";
 import YouTubePlugin from "./plugins/YouTubePlugin";
 import ContentEditable from "./ui/ContentEditable";
-import { ShareDataButton } from "./additional/ShareDataButton";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getRoot, $insertNodes } from "lexical";
 import { RestoreEditorStatePlugin } from "./plugins/RestoreEditorStatePlugin";
 import { GetContentButtonPlugin } from "./plugins/GetContentButtonPlugin";
 
@@ -135,19 +123,17 @@ export default function Editor({
 
   return (
     <>
-      {/* <ShareDataButton onClick={onClick} /> */}
-      {isRichText && <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />}
+      <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />
       <div className={`editor-container`}>
-        {/* `<p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="white-space: pre-wrap;">fsffksldkvv</span></p><p class="PlaygroundEditorTheme__paragraph"><a href="https://" rel="noreferrer" class="PlaygroundEditorTheme__link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/640px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg" alt="" width="272" height="181.4715966796875"></a></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">I made the pictre smaller</span></p><p class="PlaygroundEditorTheme__paragraph" dir="ltr"><span style="font-family: Georgia; white-space: pre-wrap;">Georgia font</span></p>` */}
         {isMaxLength && <MaxLengthPlugin maxLength={30} />}
         {initialState && <RestoreEditorStatePlugin state={initialState} />}
+        <GetContentButtonPlugin />
         <DragDropPaste />
         <AutoFocusPlugin />
         <ClearEditorPlugin />
         <ComponentPickerPlugin />
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
-
         <MentionsPlugin />
         <EmojisPlugin />
         <HashtagPlugin />
