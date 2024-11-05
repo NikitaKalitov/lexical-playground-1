@@ -51,7 +51,6 @@
     "url": "https://github.com/NikitaKalitov/lexical-playground-1",
     "type": "git"
   },
-  "main": "main.tsx",
   "author": "NikitaKalitov <162014214+NikitaKalitov@users.noreply.github.com>",
   "license": "MIT"
 }
